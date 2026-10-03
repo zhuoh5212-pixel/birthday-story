@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta name="robots" content="noindex,nofollow,noarchive,noimageindex">
+  <meta name="referrer" content="no-referrer">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#d1e5ee">
+  <meta name="birthday-story-version" content="20261003-letter-fix">
+  <title>卡比獸的生日任務</title>
+  <link rel="stylesheet" href="style.css?v=20261003-letter-fix">
+  <link rel="stylesheet" href="letter.css?v=20261003-letter-fix">
+</head>
+<body>
+  <div class="scenery" aria-hidden="true">
+    <div class="sky-light"></div><div class="sky-clouds"></div>
+    <div class="ridge ridge--far"></div><div class="ridge ridge--near"></div>
+    <div class="horizon-mist"></div><div class="ground"></div><div class="night-sky"></div>
+    <div class="night-glow"></div>
+    <div class="landscape-edge"></div>
+  </div>
+  <div id="ambientLights" aria-hidden="true"></div><canvas id="particles" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+  <main class="viewport" id="viewport" tabindex="0" aria-label="橫向生日故事，向左滑或使用滾輪前進">
+    <div class="world" id="world">
+      <section class="story-beat intro" aria-label="我們的合照">
+        <div class="cover-orbit" aria-hidden="true"></div>
+        <h1 class="mission-title">卡比獸的生日任務</h1>
+        <figure class="photo-frame photo-frame--opening" id="openingFrame">
+          <div class="photo-slot" id="openingPhoto"><img src="assets/opening-couple.png" alt="我們抱著戴生日帽的藍白色玩偶的合照" fetchpriority="high"><span class="party-hat party-hat--photo" aria-hidden="true"></span></div>
+        </figure>
+        <p class="mission-intro">今天有人生日，但卡比獸好像忘了要準備甚麼……<br><span>往下滑看看。</span></p>
+      </section>
+      <section class="story-beat arrival" aria-label="角色登場"><span class="impact" id="impact" aria-hidden="true">砰！</span></section>
+      <section class="story-beat chase" aria-label="追著雞腿"></section>
+      <div id="memories"></div>
+      <section class="story-beat finale" id="finale" aria-label="生日驚喜">
+        <div class="gift-box" id="giftBox" aria-hidden="true"><i class="gift-lid"></i><i class="gift-ribbon"></i><i class="gift-bow"></i></div>
+        <div class="party-decor" aria-hidden="true"><div class="party-backdrop"></div><div class="party-spotlight"></div><img class="party-lights" src="assets/party-lights.svg" alt=""></div>
+        <div class="photo-constellation" id="constellation" aria-hidden="true"></div>
+        <div class="letter-assembly" aria-hidden="true">
+          <div class="assembly-glow"></div>
+          <div class="envelope">
+            <span class="envelope-back"></span>
+            <div class="envelope-paper"><img id="envelopePreview" alt=""><span class="paper-rule"></span></div>
+            <span class="envelope-side envelope-side--left"></span><span class="envelope-side envelope-side--right"></span>
+            <span class="envelope-front"></span><span class="envelope-flap"></span>
+            <span class="envelope-seal"><svg viewBox="0 0 30 30"><path d="M15 22C8 18 5 15 6 11C7 7 12 7 15 11C18 7 23 7 24 11C25 15 22 18 15 22Z"/></svg></span>
+          </div>
+        </div>
+        <div class="finale__center">
+          <p class="wish-prompt" id="wishPrompt">許個願。</p>
+          <span class="party-table" aria-hidden="true"></span>
+          <button class="cake-button" id="wishButton" disabled type="button" aria-label="許願，吹熄生日蠟燭" aria-describedby="wishPrompt" aria-expanded="false">
+            <span class="cake-scene" aria-hidden="true">
+              <span class="cake-aura"></span><img class="cake-art" src="assets/cake-cutout.png" alt="">
+              <span class="candle candle--one"><span class="flame"></span></span>
+              <span class="candle candle--two"><span class="flame"></span></span>
+              <span class="candle candle--three"><span class="flame"></span></span>
+            </span>
+          </button>
+          <button class="reopen-card" id="reopenCard" type="button" hidden>再打開卡片</button>
+        </div>
+      </section>
+    </div>
+  </main>
+  <div class="actor" id="actor" aria-hidden="true"><div class="actor-sprite"><img id="actorImage" src="assets/your-character-transparent.png" alt=""><span class="party-hat party-hat--actor"></span></div></div>
+  <div class="chicken" id="chicken" aria-hidden="true"><img src="assets/objects/chicken.svg" alt=""></div>
+  <div class="speech" id="speech" role="status" aria-live="polite"></div>
+  <div class="visually-hidden" id="revealStatus" role="status" aria-live="polite"></div>
+  <audio id="backgroundMusic" src="assets/music/fourth-sweet-day.mp3" loop preload="none"></audio>
+  <button class="music-toggle" id="musicToggle" type="button" aria-label="播放背景音樂" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 17V6l10-2v11M9 9l10-2"/><ellipse cx="6" cy="18" rx="3" ry="2"/><ellipse cx="16" cy="16" rx="3" ry="2"/></svg><span class="music-wave" aria-hidden="true"><i></i><i></i><i></i></span></button>
+  <footer class="story-footer">
+    <button id="previous" type="button" aria-label="上一段">←</button>
+    <div class="progress" role="progressbar" aria-label="故事進度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress"><div class="progress__bar" id="progressBar"></div></div>
+    <button id="next" type="button" aria-label="下一段">→</button>
+  </footer>
+  <dialog id="birthdayReveal" class="surprise-dialog" aria-labelledby="letterHeading" aria-hidden="true">
+    <button class="music-toggle music-toggle--letter" id="letterMusicToggle" type="button" aria-label="播放背景音樂" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 17V6l10-2v11M9 9l10-2"/><ellipse cx="6" cy="18" rx="3" ry="2"/><ellipse cx="16" cy="16" rx="3" ry="2"/></svg><span class="music-wave" aria-hidden="true"><i></i><i></i><i></i></span></button>
+    <button class="close-card" id="closeCard" type="button" aria-label="返回生日派對">×</button>
+    <div class="letter-scroll" id="letterScroll">
+      <div class="surprise-page">
+        <div class="letter-cover" id="letterCover">
+          <div id="letterBook">
+            <div class="book-page" data-density="hard"><figure class="letter-photo"><img id="letterCoverImage" alt="胖胖們一起陪麻麻過甜甜日" decoding="async"></figure></div>
+            <div class="book-page book-inside" aria-hidden="true"><span class="book-rule"></span><span class="book-dedication">給麻麻的一封信</span></div>
+            <div class="book-page book-inside" aria-hidden="true"><span class="book-rule"></span></div>
+          </div>
+          <button class="read-letter" id="readLetter" type="button">讀這封信 <span aria-hidden="true">→</span></button>
+        </div>
+        <div class="letter-content" id="letterContent" tabindex="-1"><p class="letter-eyebrow">WITH ALL MY LOVE</p><h2 id="letterHeading"></h2><p id="letterMessage" class="letter-message"></p><img id="giftImage" class="gift-image" alt="生日驚喜" hidden><audio id="birthdayAudio" controls preload="none" hidden></audio><button class="restart" id="restart" type="button">再看一次我們的故事</button></div>
+      </div>
+    </div>
+  </dialog>
+  <script src="vendor/animejs.js?v=20261003-letter-fix"></script><script src="vendor/lenis.js?v=20261003-letter-fix"></script><script src="vendor/page-flip.js?v=20261003-letter-fix"></script><script src="vendor/tsparticles-slim.js?v=20261003-letter-fix"></script>
+  <script src="photo-data.js?v=20261003-letter-fix"></script><script src="surprise-data.js?v=20261003-letter-fix"></script><script src="motion.js?v=20261003-letter-fix"></script><script src="scroll.js?v=20261003-letter-fix"></script><script src="letter-book.js?v=20261003-letter-fix"></script><script src="effects.js?v=20261003-letter-fix"></script><script src="story.js?v=20261003-letter-fix"></script><script src="music.js?v=20261003-letter-fix"></script>
+</body>
+</html>
